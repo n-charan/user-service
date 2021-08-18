@@ -1,5 +1,7 @@
 package com.learning.microservices.userservice.entity;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -8,6 +10,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "application_locale")
+@Data
+@NoArgsConstructor
 public class ApplicationLocale {
 
     @Id
@@ -28,52 +32,4 @@ public class ApplicationLocale {
 
     @Column(length = 5)
     private String languageCode;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getCreated() {
-        return created;
-    }
-
-    public void setCreated(LocalDateTime created) {
-        this.created = created;
-    }
-
-    public LocalDateTime getLastupdated() {
-        return lastupdated;
-    }
-
-    public void setLastupdated(LocalDateTime lastupdated) {
-        this.lastupdated = lastupdated;
-    }
-
-    public Boolean getActiveflag() {
-        return activeflag;
-    }
-
-    public void setActiveflag(Boolean activeflag) {
-        this.activeflag = activeflag;
-    }
-
-    public String getCountryISO() {
-        return countryISO;
-    }
-
-    public void setCountryISO(String countryISO) {
-        this.countryISO = countryISO;
-    }
-
-    public String getLanguageCode() {
-        return languageCode;
-    }
-
-    public void setLanguageCode(String languageCode) {
-        this.languageCode = languageCode;
-    }
 }

@@ -1,5 +1,7 @@
 package com.learning.microservices.userservice.entity;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -8,6 +10,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "state_master")
+@Data
+@NoArgsConstructor
 public class UserRole {
 
     @Id
@@ -30,52 +34,4 @@ public class UserRole {
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getCreated() {
-        return created;
-    }
-
-    public void setCreated(LocalDateTime created) {
-        this.created = created;
-    }
-
-    public LocalDateTime getLastUpdated() {
-        return lastUpdated;
-    }
-
-    public void setLastUpdated(LocalDateTime lastUpdated) {
-        this.lastUpdated = lastUpdated;
-    }
-
-    public Boolean getActiveflag() {
-        return activeflag;
-    }
-
-    public void setActiveflag(Boolean activeflag) {
-        this.activeflag = activeflag;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
 }

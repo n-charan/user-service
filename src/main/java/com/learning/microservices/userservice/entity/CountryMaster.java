@@ -1,9 +1,14 @@
 package com.learning.microservices.userservice.entity;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "country_master")
+@Data
+@NoArgsConstructor
 public class CountryMaster {
 
     @Id
@@ -15,28 +20,4 @@ public class CountryMaster {
     
     @Column(nullable = false, length = 25)
     private String ISO;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getISO() {
-        return ISO;
-    }
-
-    public void setISO(String ISO) {
-        this.ISO = ISO;
-    }
 }

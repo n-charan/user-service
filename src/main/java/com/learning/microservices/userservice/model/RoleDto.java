@@ -1,18 +1,15 @@
 package com.learning.microservices.userservice.model;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
 public class RoleDto {
 
     private Long id;
 
     private String name;
-
-    public RoleDto() {
-    }
-
-    public RoleDto(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 
     public Long getId() {
         return id;
