@@ -1,17 +1,53 @@
 package com.learning.microservices.userservice.resource;
 
-import org.springframework.web.bind.annotation.RestController;
+import com.learning.microservices.userservice.model.UserDto;
+import com.learning.microservices.userservice.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController("/users")
 public class UserResource {
 
-    //TODO : List of users(all/active by role)
+    private final UserService userService;
 
-    //TODO : Get user details
+    UserResource(UserService userService) {
+        this.userService = userService;
+    }
 
-    //TODO : Create User
+    @GetMapping
+    public ResponseEntity<List<UserDto>> getAllUsers(
+            @RequestParam(required = false) Boolean activeflag,
+            @RequestParam(required = false) String role) {
+        List<UserDto> userList = userService.getAllUsers(activeflag, role);
+        return ResponseEntity.ok(userList);
+    }
 
-    //TODO : Update User
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDto> getUserDetails(@PathVariable(name = "id") Long userId) {
+        UserDto user = userService.getUserDetails(userId);
+        return ResponseEntity.ok(user);
+    }
 
-    //TODO : Delete User(by type)
+    @PostMapping
+    public ResponseEntity<UserDto> saveUser(
+            @RequestBody UserDto userDto) {
+        UserDto user = userService.saveUser(userDto);
+        return ResponseEntity.ok(user);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDto> updateUser(
+            @RequestBody UserDto userDto) {
+        UserDto user = userService.updateUser(userDto);
+        return ResponseEntity.ok(user);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable(name = "id") Long userId) {
+        userService.deleteUser(userId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }

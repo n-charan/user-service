@@ -7,8 +7,8 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "state_master")
-public class UserRole {
+@Table(name = "application_locale")
+public class ApplicationLocale {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,18 +18,16 @@ public class UserRole {
     private LocalDateTime created;
 
     @UpdateTimestamp
-    private LocalDateTime lastUpdated;
+    private LocalDateTime lastupdated;
 
-    @Column(columnDefinition = "tinyint(1) default 1")
+    @Column(name = "activeflag", columnDefinition = "tinyint(1) default 1")
     private Boolean activeflag;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(name="country_iso", length = 5)
+    private String countryISO;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id", nullable = false)
-    private Role role;
+    @Column(length = 5)
+    private String languageCode;
 
     public Long getId() {
         return id;
@@ -47,12 +45,12 @@ public class UserRole {
         this.created = created;
     }
 
-    public LocalDateTime getLastUpdated() {
-        return lastUpdated;
+    public LocalDateTime getLastupdated() {
+        return lastupdated;
     }
 
-    public void setLastUpdated(LocalDateTime lastUpdated) {
-        this.lastUpdated = lastUpdated;
+    public void setLastupdated(LocalDateTime lastupdated) {
+        this.lastupdated = lastupdated;
     }
 
     public Boolean getActiveflag() {
@@ -63,19 +61,19 @@ public class UserRole {
         this.activeflag = activeflag;
     }
 
-    public User getUser() {
-        return user;
+    public String getCountryISO() {
+        return countryISO;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setCountryISO(String countryISO) {
+        this.countryISO = countryISO;
     }
 
-    public Role getRole() {
-        return role;
+    public String getLanguageCode() {
+        return languageCode;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setLanguageCode(String languageCode) {
+        this.languageCode = languageCode;
     }
 }

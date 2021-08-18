@@ -1,15 +1,15 @@
 package com.learning.microservices.userservice.model;
 
-public class TimezoneDto {
+public class StateDto {
 
     private Long id;
 
     private String name;
 
-    public TimezoneDto() {
+    public StateDto() {
     }
 
-    public TimezoneDto(Long id, String name) {
+    public StateDto(Long id, String name) {
         this.id = id;
         this.name = name;
     }

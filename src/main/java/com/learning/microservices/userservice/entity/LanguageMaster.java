@@ -1,11 +1,10 @@
 package com.learning.microservices.userservice.entity;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
-@Table(name = "role")
-public class Role {
+@Table(name = "language_master")
+public class LanguageMaster {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,8 +12,8 @@ public class Role {
 
     @Column(nullable = false, length = 50)
     private String name;
-
-    @Column(nullable = false, length = 25)
+    
+    @Column(nullable = false, length = 50)
     private String Code;
 
     public Long getId() {

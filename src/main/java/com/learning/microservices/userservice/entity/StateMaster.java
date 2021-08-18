@@ -1,11 +1,10 @@
 package com.learning.microservices.userservice.entity;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
-@Table(name = "role")
-public class Role {
+@Table(name = "state_master")
+public class StateMaster {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,8 +13,12 @@ public class Role {
     @Column(nullable = false, length = 50)
     private String name;
 
-    @Column(nullable = false, length = 25)
+    @Column(nullable = false, length = 50)
     private String Code;
+
+    @ManyToOne
+    @JoinColumn(name = "country_id", nullable = false)
+    private CountryMaster countryMaster;
 
     public Long getId() {
         return id;
@@ -39,5 +42,13 @@ public class Role {
 
     public void setCode(String code) {
         Code = code;
+    }
+
+    public CountryMaster getCountryMaster() {
+        return countryMaster;
+    }
+
+    public void setCountryMaster(CountryMaster countryMaster) {
+        this.countryMaster = countryMaster;
     }
 }

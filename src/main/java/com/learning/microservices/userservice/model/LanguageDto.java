@@ -1,21 +1,23 @@
-package com.learning.microservices.userservice.entity;
+package com.learning.microservices.userservice.model;
 
-import javax.persistence.*;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Entity
-@Table(name = "role")
-public class Role {
+public class LanguageDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 50)
     private String name;
 
-    @Column(nullable = false, length = 25)
-    private String Code;
+    @JsonIgnore
+    private String code;
+
+    public LanguageDto() {
+    }
+
+    public LanguageDto(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public Long getId() {
         return id;
@@ -34,10 +36,10 @@ public class Role {
     }
 
     public String getCode() {
-        return Code;
+        return code;
     }
 
     public void setCode(String code) {
-        Code = code;
+        this.code = code;
     }
 }
