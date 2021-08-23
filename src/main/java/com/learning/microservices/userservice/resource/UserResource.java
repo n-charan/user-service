@@ -6,9 +6,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
-@RestController("/users")
+@RestController
+@RequestMapping("/users")
 public class UserResource {
 
     private final UserService userService;
@@ -19,9 +21,9 @@ public class UserResource {
 
     @GetMapping
     public ResponseEntity<List<UserDto>> getAllUsers(
-            @RequestParam(required = false) Boolean activeflag,
+            @RequestParam(required = false) Boolean active,
             @RequestParam(required = false) String role) {
-        List<UserDto> userList = userService.getAllUsers(activeflag, role);
+        List<UserDto> userList = userService.getAllUsers(active, role);
         return ResponseEntity.ok(userList);
     }
 
@@ -33,14 +35,15 @@ public class UserResource {
 
     @PostMapping
     public ResponseEntity<UserDto> saveUser(
-            @RequestBody UserDto userDto) {
+            @Valid @RequestBody UserDto userDto) {
         UserDto user = userService.saveUser(userDto);
-        return ResponseEntity.ok(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserDto> updateUser(
-            @RequestBody UserDto userDto) {
+            @PathVariable(name = "id") Long userId ,@Valid @RequestBody UserDto userDto) {
+        userDto.setId(userId);
         UserDto user = userService.updateUser(userDto);
         return ResponseEntity.ok(user);
     }

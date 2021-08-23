@@ -60,4 +60,13 @@ public class User {
 
     @Column(name = "login_complete", columnDefinition = "tinyint(1) default 0")
     private Boolean loginComplete;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
+
+    @Override
+    public String toString() {
+        return "";
+    }
 }

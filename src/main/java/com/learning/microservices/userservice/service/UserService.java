@@ -1,12 +1,16 @@
 package com.learning.microservices.userservice.service;
 
+import com.learning.microservices.userservice.entity.CountryMaster;
 import com.learning.microservices.userservice.entity.User;
+import com.learning.microservices.userservice.exception.ResourceNotFoundException;
 import com.learning.microservices.userservice.mapper.UserMapper;
 import com.learning.microservices.userservice.model.UserDto;
 import com.learning.microservices.userservice.repository.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,30 +28,43 @@ public class UserService {
 
     private final UserMapper userMapper;
 
+    private final RoleRepository roleRepository;
+
     UserService(UserRepository userRepository,
                 UserMapper userMapper,
                 CountryMasterRepository countryMasterRepository,
                 StateMasterRepository stateMasterRepository,
                 TimezoneRepository timezoneRepository,
-                ApplicationLocaleRepository applicationLocaleRepository) {
+                ApplicationLocaleRepository applicationLocaleRepository,
+                RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.countryMasterRepository = countryMasterRepository;
         this.stateMasterRepository = stateMasterRepository;
         this.timezoneRepository = timezoneRepository;
         this.applicationLocaleRepository = applicationLocaleRepository;
+        this.roleRepository = roleRepository;
     }
 
     public List<UserDto> getAllUsers(Boolean active, String role) {
         List<User> userList = userRepository.findAll();
+        if (active != null) {
+            userList = userList.stream().filter(user -> user.getActiveflag().equals(active)).collect(Collectors.toList());
+        }
+        if (role != null) {
+            userList = userList.stream().filter(user -> user.getRole().getCode().equals(role)).collect(Collectors.toList());
+        }
         List<UserDto> userDtoList = userList.stream().map(user ->
                 userMapper.toDto(user)).collect(Collectors.toList());
         return userDtoList;
     }
 
     public UserDto getUserDetails(Long userId) {
-        User user = userRepository.getById(userId);
-        return userMapper.toDto(user);
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (!userOptional.isPresent()) {
+            throw new ResourceNotFoundException("User not found");
+        }
+        return userMapper.toDto(userOptional.get());
     }
 
     public UserDto saveUser(UserDto userDto) {
@@ -55,39 +72,58 @@ public class UserService {
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
-        user.setCountryMaster(countryMasterRepository.getById(userDto.getCountryId()));
-        if(userDto.getStateId() != null) {
-            user.setStateMaster(stateMasterRepository.getById(userDto.getStateId()));
+        CountryMaster countryMaster = countryMasterRepository.findByISO(userDto.getCountryISO());
+        user.setCountryMaster(countryMaster);
+        if(StringUtils.hasLength(userDto.getStateCode())) {
+            user.setStateMaster(stateMasterRepository.findByCountryMasterIdAndCode(countryMaster.getId(), userDto.getStateCode()));
         }
-        user.setTimezoneMaster(timezoneRepository.getById(userDto.getTimezoneId()));
-        user.setApplicationLocale(applicationLocaleRepository.getById(userDto.getApplicationLocaleId()));
+        user.setTimezoneMaster(timezoneRepository.findByCode(userDto.getTimezoneCode()));
+        user.setApplicationLocale(applicationLocaleRepository.findByLocale(userDto.getAppLocale()));
+        user.setRole(roleRepository.findByCode(userDto.getRoleCode()));
+        user.setActiveflag(Boolean.TRUE);
         user = userRepository.save(user);
         return userMapper.toDto(user);
     }
 
     public UserDto updateUser(UserDto userDto) {
-        User user = userRepository.getById(userDto.getId());
+        Optional<User> userOptional = userRepository.findById(userDto.getId());
+        if (!userOptional.isPresent()) {
+            throw new ResourceNotFoundException("User not found");
+        }
+        User user = userOptional.get();
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
-        if (!userDto.getCountryId().equals(user.getCountryMaster().getId())) {
-            user.setCountryMaster(countryMasterRepository.getById(userDto.getCountryId()));
+        CountryMaster countryMaster = user.getCountryMaster();
+        if (!userDto.getCountryISO().equals(countryMaster.getISO())) {
+            countryMaster = countryMasterRepository.findByISO(userDto.getCountryISO());
+            user.setCountryMaster(countryMaster);
         }
-        if (user.getStateMaster()!=null && userDto.getStateId().equals(user.getStateMaster().getId())) {
-            user.setStateMaster(userDto.getStateId()==null ? null : stateMasterRepository.getById(userDto.getStateId()));
+        if (StringUtils.hasLength(userDto.getStateCode())
+                && (user.getStateMaster() == null || !userDto.getStateCode().equals(user.getStateMaster().getCode()))) {
+            user.setStateMaster(userDto.getStateCode()==null
+                    ? null
+                    : stateMasterRepository.findByCountryMasterIdAndCode(countryMaster.getId(), userDto.getStateCode()));
         }
-        if (!userDto.getTimezoneId().equals(user.getTimezoneMaster().getId())) {
-            user.setTimezoneMaster(timezoneRepository.getById(userDto.getTimezoneId()));
+        if (!userDto.getTimezoneCode().equals(user.getTimezoneMaster().getCode())) {
+            user.setTimezoneMaster(timezoneRepository.findByCode(userDto.getTimezoneCode()));
         }
-        if (!userDto.getApplicationLocaleId().equals(user.getApplicationLocale().getId())) {
-            user.setApplicationLocale(applicationLocaleRepository.getById(userDto.getApplicationLocaleId()));
+        if (!userDto.getAppLocale().equals(user.getApplicationLocale().getLocale())) {
+            user.setApplicationLocale(applicationLocaleRepository.findByLocale(userDto.getAppLocale()));
+        }
+        if (!userDto.getRoleCode().equals(user.getRole().getCode())) {
+            user.setRole(roleRepository.findByCode(userDto.getRoleCode()));
         }
         user = userRepository.save(user);
         return userMapper.toDto(user);
     }
 
     public void deleteUser(Long userId) {
-        User user = userRepository.getById(userId);
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (!userOptional.isPresent()) {
+            throw new ResourceNotFoundException("User not found");
+        }
+        User user = userOptional.get();
         user.setActiveflag(Boolean.FALSE);
         userRepository.save(user);
     }

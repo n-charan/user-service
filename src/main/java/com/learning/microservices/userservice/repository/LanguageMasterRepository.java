@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LanguageMasterRepository extends JpaRepository<LanguageMaster, Long> {
+
+    LanguageMaster findByCode(String code);
 }

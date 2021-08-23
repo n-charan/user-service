@@ -14,6 +14,7 @@ public interface UserMapper {
             @Mapping(target = "state", source = "stateMaster"),
             @Mapping(target = "timezone", source = "timezoneMaster"),
             @Mapping(target = "applicationLocale", source = "applicationLocale"),
+            @Mapping(target = "role", source = "role"),
     })
     UserDto toDto(User user);
 }

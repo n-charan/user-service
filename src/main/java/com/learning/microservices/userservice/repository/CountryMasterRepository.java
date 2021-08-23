@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CountryMasterRepository extends JpaRepository<CountryMaster, Long> {
+
+    CountryMaster findByISO(String ISO);
 }

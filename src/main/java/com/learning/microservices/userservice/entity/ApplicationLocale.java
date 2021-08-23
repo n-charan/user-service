@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Table(name = "application_locale")
 @Data
 @NoArgsConstructor
+@Where(clause = "activeflag=1")
 public class ApplicationLocale {
 
     @Id
@@ -27,9 +29,6 @@ public class ApplicationLocale {
     @Column(name = "activeflag", columnDefinition = "tinyint(1) default 1")
     private Boolean activeflag;
 
-    @Column(name="country_iso", length = 5)
-    private String countryISO;
-
-    @Column(length = 5)
-    private String languageCode;
+    @Column(name="locale", length = 10)
+    private String locale;
 }

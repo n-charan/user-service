@@ -19,5 +19,5 @@ public class TimezoneMaster {
     private String name;
 
     @Column(nullable = false, length = 50)
-    private String Code;
+    private String code;
 }

@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ApplicationLocaleRepository extends JpaRepository<ApplicationLocale, Long> {
+
+    ApplicationLocale findByLocale(String locale);
 }

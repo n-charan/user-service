@@ -28,8 +28,7 @@ public class ApplicationLocaleServiceTest {
     public void getAllLocalesTest() {
         ApplicationLocale applicationLocale = new ApplicationLocale();
         applicationLocale.setActiveflag(Boolean.TRUE);
-        applicationLocale.setCountryISO("US");
-        applicationLocale.setLanguageCode("en");
+        applicationLocale.setLocale("en_US");
 
         List<ApplicationLocale> applicationLocaleList = new ArrayList<>();
         applicationLocaleList.add(applicationLocale);

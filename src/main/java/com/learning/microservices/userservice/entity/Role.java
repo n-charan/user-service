@@ -19,5 +19,5 @@ public class Role {
     private String name;
 
     @Column(nullable = false, length = 25)
-    private String Code;
+    private String code;
 }

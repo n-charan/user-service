@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -24,15 +25,15 @@ public class ApplicationLocaleResource {
         return ResponseEntity.ok(appLocaleList);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> getAllApplicationLocales(@PathVariable(name = "id") Long appLocalId) {
-        applicationLocaleService.removeLocaleById(appLocalId);
+    @DeleteMapping("/{locale}")
+    public ResponseEntity<Void> getAllApplicationLocales(@PathVariable String locale) {
+        applicationLocaleService.deleteLocale(locale);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PostMapping
     public ResponseEntity<ApplicationLocaleDto> saveNewLocale(
-            @RequestBody ApplicationLocaleDto applicationLocaleDto) {
+            @Valid @RequestBody ApplicationLocaleDto applicationLocaleDto) {
         ApplicationLocaleDto appLocaleDto = applicationLocaleService.saveNewLocale(applicationLocaleDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(appLocaleDto);
     }

@@ -1,17 +1,19 @@
 package com.learning.microservices.userservice.resource;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.learning.microservices.userservice.entity.ApplicationLocale;
 import com.learning.microservices.userservice.mapper.ApplicationLocaleMapper;
 import com.learning.microservices.userservice.model.ApplicationLocaleDto;
 import com.learning.microservices.userservice.repository.ApplicationLocaleRepository;
-import com.learning.microservices.userservice.repository.CountryMasterRepository;
-import com.learning.microservices.userservice.repository.LanguageMasterRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Random;
 
@@ -33,12 +35,6 @@ public class ApplicationLocaleResourceTest {
     private ApplicationLocaleResource applicationLocaleResource;
 
     @Autowired
-    private CountryMasterRepository countryMasterRepository;
-
-    @Autowired
-    private LanguageMasterRepository languageMasterRepository;
-
-    @Autowired
     private ApplicationLocaleRepository applicationLocaleRepository;
 
     @Autowired
@@ -56,12 +52,9 @@ public class ApplicationLocaleResourceTest {
     @DirtiesContext
     public void getAllApplicationLocalesTest() throws Exception {
         String uri = "/app-locales";
-        String countryISO = "US";
-        String languageCode = "en";
 
         ApplicationLocale applicationLocale = new ApplicationLocale();
-        applicationLocale.setCountryISO(countryISO);
-        applicationLocale.setLanguageCode(languageCode);
+        applicationLocale.setLocale("en_US");
         applicationLocaleRepository.save(applicationLocale);
 
         ApplicationLocaleDto applicationLocaleDto = applicationLocaleMapper.toDto(applicationLocale);
@@ -71,6 +64,26 @@ public class ApplicationLocaleResourceTest {
                     .andExpect(jsonPath("$", hasSize(1)))
                     .andExpect(jsonPath("$[0].locale", is(applicationLocaleDto.getLocale())))
                     .andReturn();
+    }
+
+    @Test
+    public void saveLocaleWithInvalidCountry() throws Exception {
+
+        ApplicationLocaleDto applicationLocaleDto = new ApplicationLocaleDto();
+        applicationLocaleDto.setCountryISO("ABC");
+        applicationLocaleDto.setLanguageCode("en");
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(applicationLocaleDto);
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post("/app-locales")
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        this.mockMvc.perform(requestBuilder)
+                .andExpect(status().isBadRequest())
+                .andReturn();
     }
 
 

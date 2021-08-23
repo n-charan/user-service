@@ -19,7 +19,7 @@ public class StateMaster {
     private String name;
 
     @Column(nullable = false, length = 50)
-    private String Code;
+    private String code;
 
     @ManyToOne
     @JoinColumn(name = "country_id", nullable = false)
