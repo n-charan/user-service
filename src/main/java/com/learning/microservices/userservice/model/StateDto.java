@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class StateDto {
 
-    private Long id;
-
     private String name;
+
+    private String code;
 }

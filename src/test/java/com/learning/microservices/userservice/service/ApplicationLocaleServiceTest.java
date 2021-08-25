@@ -1,7 +1,8 @@
 package com.learning.microservices.userservice.service;
 
 import com.learning.microservices.userservice.entity.ApplicationLocale;
-import com.learning.microservices.userservice.model.ApplicationLocaleDto;
+import com.learning.microservices.userservice.model.ApplicationLocaleRequestDto;
+import com.learning.microservices.userservice.model.ApplicationLocaleResponseDto;
 import com.learning.microservices.userservice.repository.ApplicationLocaleRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -35,7 +36,7 @@ public class ApplicationLocaleServiceTest {
 
         when(applicationLocaleRepository.findAll()).thenReturn(applicationLocaleList);
 
-        List<ApplicationLocaleDto> applicationLocaleDtoList = applicationLocaleService.getAllLocales();
+        List<ApplicationLocaleResponseDto> applicationLocaleDtoList = applicationLocaleService.getAllLocales();
         assertNotNull(applicationLocaleDtoList);
         assertEquals("en_US", applicationLocaleDtoList.get(0).getLocale());
     }

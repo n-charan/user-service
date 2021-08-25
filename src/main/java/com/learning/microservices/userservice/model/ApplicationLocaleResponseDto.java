@@ -5,9 +5,8 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class CountryDto {
+public class ApplicationLocaleResponseDto {
 
-    private String name;
-
-    private String ISO;
+    private String locale;
 }
+

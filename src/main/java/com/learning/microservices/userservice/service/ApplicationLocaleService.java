@@ -3,7 +3,8 @@ package com.learning.microservices.userservice.service;
 import com.learning.microservices.userservice.entity.ApplicationLocale;
 import com.learning.microservices.userservice.exception.ResourceNotFoundException;
 import com.learning.microservices.userservice.mapper.ApplicationLocaleMapper;
-import com.learning.microservices.userservice.model.ApplicationLocaleDto;
+import com.learning.microservices.userservice.model.ApplicationLocaleRequestDto;
+import com.learning.microservices.userservice.model.ApplicationLocaleResponseDto;
 import com.learning.microservices.userservice.repository.ApplicationLocaleRepository;
 import org.springframework.stereotype.Service;
 
@@ -24,13 +25,13 @@ public class ApplicationLocaleService {
         this.applicationLocaleMapper = applicationLocaleMapper;
     }
 
-    public List<ApplicationLocaleDto> getAllLocales() {
+    public List<ApplicationLocaleResponseDto> getAllLocales() {
         List<ApplicationLocale> applicationLocaleList = applicationLocaleRepository.findAll();
         return applicationLocaleList.stream().map(applicationLocale ->
                 applicationLocaleMapper.toDto(applicationLocale)).collect(Collectors.toList());
     }
 
-    public ApplicationLocaleDto saveNewLocale(ApplicationLocaleDto applicationLocaleDto) {
+    public ApplicationLocaleResponseDto saveNewLocale(ApplicationLocaleRequestDto applicationLocaleDto) {
         ApplicationLocale applicationLocale = new ApplicationLocale();
         Locale locale = new Locale(applicationLocaleDto.getLanguageCode(), applicationLocaleDto.getCountryISO());
         applicationLocale.setLocale(locale.toString());

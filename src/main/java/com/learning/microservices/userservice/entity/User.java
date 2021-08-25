@@ -25,7 +25,7 @@ public class User {
     private LocalDateTime created;
 
     @UpdateTimestamp
-    private LocalDateTime lastUpdated;
+    private LocalDateTime lastupdated;
 
     @Version
     private Integer version;

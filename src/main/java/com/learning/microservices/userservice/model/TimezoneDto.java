@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TimezoneDto {
 
-    private Long id;
-
     private String name;
+
+    private String code;
 }

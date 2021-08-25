@@ -4,7 +4,8 @@ import com.learning.microservices.userservice.entity.CountryMaster;
 import com.learning.microservices.userservice.entity.User;
 import com.learning.microservices.userservice.exception.ResourceNotFoundException;
 import com.learning.microservices.userservice.mapper.UserMapper;
-import com.learning.microservices.userservice.model.UserDto;
+import com.learning.microservices.userservice.model.UserRequestDto;
+import com.learning.microservices.userservice.model.UserResponseDto;
 import com.learning.microservices.userservice.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -46,7 +47,7 @@ public class UserService {
         this.roleRepository = roleRepository;
     }
 
-    public List<UserDto> getAllUsers(Boolean active, String role) {
+    public List<UserResponseDto> getAllUsers(Boolean active, String role) {
         List<User> userList = userRepository.findAll();
         if (active != null) {
             userList = userList.stream().filter(user -> user.getActiveflag().equals(active)).collect(Collectors.toList());
@@ -54,12 +55,12 @@ public class UserService {
         if (role != null) {
             userList = userList.stream().filter(user -> user.getRole().getCode().equals(role)).collect(Collectors.toList());
         }
-        List<UserDto> userDtoList = userList.stream().map(user ->
+        List<UserResponseDto> userDtoList = userList.stream().map(user ->
                 userMapper.toDto(user)).collect(Collectors.toList());
         return userDtoList;
     }
 
-    public UserDto getUserDetails(Long userId) {
+    public UserResponseDto getUserDetails(Long userId) {
         Optional<User> userOptional = userRepository.findById(userId);
         if (!userOptional.isPresent()) {
             throw new ResourceNotFoundException("User not found");
@@ -67,7 +68,7 @@ public class UserService {
         return userMapper.toDto(userOptional.get());
     }
 
-    public UserDto saveUser(UserDto userDto) {
+    public UserResponseDto saveUser(UserRequestDto userDto) {
         User user = new User();
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
@@ -85,7 +86,7 @@ public class UserService {
         return userMapper.toDto(user);
     }
 
-    public UserDto updateUser(UserDto userDto) {
+    public UserResponseDto updateUser(UserRequestDto userDto) {
         Optional<User> userOptional = userRepository.findById(userDto.getId());
         if (!userOptional.isPresent()) {
             throw new ResourceNotFoundException("User not found");

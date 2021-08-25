@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1-role-data" author="ncharan">
+        <sql>
+            insert into `role` (`id`, `code`, `name`) values('1','ROLE_ADMIN','Admin');
+            insert into `role` (`id`, `code`, `name`) values('2','ROLE_USER','User');
+            insert into `role` (`id`, `code`, `name`) values('3','ROLE_EVENT_ADMIN','Event Admin');
+            insert into `role` (`id`, `code`, `name`) values('4','ROLE_EVENT_ASSISTANT','Event Assistant');
+            insert into `role` (`id`, `code`, `name`) values('5','ROLE_EVENT_PRESENTER','Event Presenter');
+        </sql>
+    </changeSet>
+
+    <changeSet id="2-language-master-data" author="ncharan">
+        <sql>
+            insert into `language_master` (`id`, `name`, `code`) values('1','Chinese','zh');
+            insert into `language_master` (`id`, `name`, `code`) values('2','Chinese - Mandarin','cmn');
+            insert into `language_master` (`id`, `name`, `code`) values('3','Dutch','nl');
+            insert into `language_master` (`id`, `name`, `code`) values('4','English','en');
+            insert into `language_master` (`id`, `name`, `code`) values('5','Flemish','nl');
+            insert into `language_master` (`id`, `name`, `code`) values('6','French','fr');
+            insert into `language_master` (`id`, `name`, `code`) values('7','German','de');
+            insert into `language_master` (`id`, `name`, `code`) values('8','Italian','it');
+            insert into `language_master` (`id`, `name`, `code`) values('9','Japanese','ja');
+            insert into `language_master` (`id`, `name`, `code`) values('10','Korean','ko');
+            insert into `language_master` (`id`, `name`, `code`) values('11','Portuguese','pt');
+            insert into `language_master` (`id`, `name`, `code`) values('12','Russian','ru');
+            insert into `language_master` (`id`, `name`, `code`) values('13','Spanish','es');
+            insert into `language_master` (`id`, `name`, `code`) values('14','Tagalog','tl');
+            insert into `language_master` (`id`, `name`, `code`) values('15','Vietnamese','vi');
+        </sql>
+    </changeSet>
+
+    <changeSet id="3-timezone-master-data" author="ncharan">
+        <sqlFile path="sql/timezone-master-data.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="4-country-master-data" author="ncharan">
+        <sqlFile path="sql/country-master-data.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="5-state-master-data" author="ncharan">
+        <sqlFile path="sql/state-master-data.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+</databaseChangeLog>

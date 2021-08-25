@@ -3,7 +3,8 @@ package com.learning.microservices.userservice.resource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.learning.microservices.userservice.entity.ApplicationLocale;
 import com.learning.microservices.userservice.mapper.ApplicationLocaleMapper;
-import com.learning.microservices.userservice.model.ApplicationLocaleDto;
+import com.learning.microservices.userservice.model.ApplicationLocaleRequestDto;
+import com.learning.microservices.userservice.model.ApplicationLocaleResponseDto;
 import com.learning.microservices.userservice.repository.ApplicationLocaleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -57,7 +58,7 @@ public class ApplicationLocaleResourceTest {
         applicationLocale.setLocale("en_US");
         applicationLocaleRepository.save(applicationLocale);
 
-        ApplicationLocaleDto applicationLocaleDto = applicationLocaleMapper.toDto(applicationLocale);
+        ApplicationLocaleResponseDto applicationLocaleDto = applicationLocaleMapper.toDto(applicationLocale);
 
         this.mockMvc.perform(get(uri))
                     .andExpect(status().isOk())
@@ -69,7 +70,7 @@ public class ApplicationLocaleResourceTest {
     @Test
     public void saveLocaleWithInvalidCountry() throws Exception {
 
-        ApplicationLocaleDto applicationLocaleDto = new ApplicationLocaleDto();
+        ApplicationLocaleRequestDto applicationLocaleDto = new ApplicationLocaleRequestDto();
         applicationLocaleDto.setCountryISO("ABC");
         applicationLocaleDto.setLanguageCode("en");
         ObjectMapper mapper = new ObjectMapper();

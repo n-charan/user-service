@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <property name="now" value="now()" dbms="mysql"/>
+
+    <changeSet id="application-locale-table" author="ncharan">
+        <createTable tableName="application_locale">
+            <column name="id" type="bigint(20)" startWith="50" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="created" type="datetime" defaultValueComputed="NOW()"/>
+            <column name="lastupdated" type="datetime" defaultValueComputed="NOW() ON UPDATE NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="activeflag" type="tinyint(1)" defaultValue="1"/>
+            <column name="locale" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="application-locale-data" author="ncharan">
+        <insert tableName="application_locale">
+            <column name="created" value="${now}"/>
+            <column name="lastupdated" value="${now}"/>
+            <column name="activeflag" value="1"/>
+            <column name="locale" value="en_US"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,7 +1,7 @@
 package com.learning.microservices.userservice.mapper;
 
 import com.learning.microservices.userservice.entity.User;
-import com.learning.microservices.userservice.model.UserDto;
+import com.learning.microservices.userservice.model.UserResponseDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -16,5 +16,5 @@ public interface UserMapper {
             @Mapping(target = "applicationLocale", source = "applicationLocale"),
             @Mapping(target = "role", source = "role"),
     })
-    UserDto toDto(User user);
+    UserResponseDto toDto(User user);
 }

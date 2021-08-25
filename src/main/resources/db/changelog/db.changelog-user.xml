@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <property name="now" value="now()" dbms="mysql"/>
+
+    <changeSet id="user-table" author="ncharan">
+        <createTable tableName="user">
+            <column name="id" type="bigint(20)" startWith="101" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="created" type="datetime" defaultValueComputed="NOW()"/>
+            <column name="lastupdated" type="datetime" defaultValueComputed="NOW() ON UPDATE NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="activeflag" type="tinyint(1)" defaultValue="1"/>
+            <column name="version" type="int(11)"/>
+            <column name="email" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country_id" type="bigint(20)">
+                <constraints nullable="false" foreignKeyName="FK_USER_COUNTRY_ID" references="country_master(id)"/>
+            </column>
+            <column name="state_id" type="bigint(20)">
+                <constraints foreignKeyName="FK_USER_STATE_ID" references="state_master(id)"/>
+            </column>
+            <column name="timezone_id" type="bigint(20)">
+                <constraints nullable="false" foreignKeyName="FK_USER_TIMEZONE_ID" references="timezone_master(id)"/>
+            </column>
+            <column name="role_id" type="bigint(20)">
+                <constraints nullable="false" foreignKeyName="FK_USER_ROLE_ID" references="role(id)"/>
+            </column>
+            <column name="application_locale_id" type="bigint(20)">
+                <constraints nullable="false" foreignKeyName="FK_USER_APP_LOCALE_ID" references="application_locale(id)"/>
+            </column>
+            <column name="login_complete" type="tinyint(1)" defaultValue="0"/>
+            <column name="password" type="varchar(200)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="user-data" author="ncharan">
+        <insert tableName="user">
+            <column name="id" value="5000"/>
+            <column name="created" value="${now}"/>
+            <column name="lastupdated" value="${now}"/>
+            <column name="activeflag" value="1"/>
+            <column name="version" value="0"/>
+            <column name="first_name" value="Nishant"/>
+            <column name="last_name" value="Charan"/>
+            <column name="email" value="nishant.charan@rs.com"/>
+            <column name="country_id" value="1101"/>
+            <column name="state_id" value="12042"/>
+            <column name="timezone_id" value="2049"/>
+            <column name="role_id" value="1"/>
+            <column name="application_locale_id" value="50"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

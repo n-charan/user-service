@@ -1,6 +1,7 @@
 package com.learning.microservices.userservice.resource;
 
-import com.learning.microservices.userservice.model.ApplicationLocaleDto;
+import com.learning.microservices.userservice.model.ApplicationLocaleRequestDto;
+import com.learning.microservices.userservice.model.ApplicationLocaleResponseDto;
 import com.learning.microservices.userservice.service.ApplicationLocaleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +21,8 @@ public class ApplicationLocaleResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<ApplicationLocaleDto>> getAllApplicationLocales() {
-        List<ApplicationLocaleDto> appLocaleList = applicationLocaleService.getAllLocales();
+    public ResponseEntity<List<ApplicationLocaleResponseDto>> getAllApplicationLocales() {
+        List<ApplicationLocaleResponseDto> appLocaleList = applicationLocaleService.getAllLocales();
         return ResponseEntity.ok(appLocaleList);
     }
 
@@ -32,9 +33,9 @@ public class ApplicationLocaleResource {
     }
 
     @PostMapping
-    public ResponseEntity<ApplicationLocaleDto> saveNewLocale(
-            @Valid @RequestBody ApplicationLocaleDto applicationLocaleDto) {
-        ApplicationLocaleDto appLocaleDto = applicationLocaleService.saveNewLocale(applicationLocaleDto);
+    public ResponseEntity<ApplicationLocaleResponseDto> saveNewLocale(
+            @Valid @RequestBody ApplicationLocaleRequestDto applicationLocaleDto) {
+        ApplicationLocaleResponseDto appLocaleDto = applicationLocaleService.saveNewLocale(applicationLocaleDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(appLocaleDto);
     }
 }
